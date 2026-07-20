@@ -19,5 +19,5 @@ PRAC1_3
 
 Error: Using < instead of > in the condition finds the shortest string instead of the longest.
 
-Use if(arr[i].length() > longest.length()).
+Solution : Use if(arr[i].length() > longest.length()).
 This updates longest only when a longer string is found.
