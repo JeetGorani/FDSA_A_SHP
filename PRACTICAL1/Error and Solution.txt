@@ -1,4 +1,4 @@
-prac1_1
+PRAC1_1
 
 Error: Not using h = h % n, so the program rotates the array too many times when h is very large.
 
