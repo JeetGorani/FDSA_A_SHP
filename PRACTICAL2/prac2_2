@@ -1,70 +1,54 @@
 #include <iostream>
 #include <vector>
-using namespace std;
 
-int iterativeBinarySearch(vector<int> arr, int target)
-{
-    int low = 0;
-    int high = arr.size() - 1;
+int binarySearchIterative(const std::vector<int>& books, int target) {
+    int left = 0;
+    int right = books.size() - 1;
 
-    while (low <= high)
-    {
-        int mid = (low + high) / 2;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
 
-        if (arr[mid] == target)
+        if (books[mid] == target) {
             return mid;
-        else if (arr[mid] < target)
-            low = mid + 1;
-        else
-            high = mid - 1;
+        }
+        if (books[mid] < target) {
+            left = mid + 1;
+        } else {
+            right = mid - 1;
+        }
     }
 
     return -1;
 }
 
-int recursiveBinarySearch(vector<int> arr, int low, int high, int target)
-{
-    if (low > high)
+int binarySearchRecursive(const std::vector<int>& books, int left, int right, int target) {
+    if (left > right) {
         return -1;
+    }
 
-    int mid = (low + high) / 2;
+    int mid = left + (right - left) / 2;
 
-    if (arr[mid] == target)
+    if (books[mid] == target) {
         return mid;
-    else if (arr[mid] < target)
-        return recursiveBinarySearch(arr, mid + 1, high, target);
-    else
-        return recursiveBinarySearch(arr, low, mid - 1, target);
+    }
+    if (books[mid] < target) {
+        return binarySearchRecursive(books, mid + 1, right, target);
+    } else {
+        return binarySearchRecursive(books, left, mid - 1, target);
+    }
 }
 
-int main()
-{
-    int n;
-    cout << "Enter number of book codes: ";
-    cin >> n;
+int main() {
+    std::vector<int> bookCodes = {101, 105, 112, 120, 135, 140, 150};
+    int target = 135;
 
-    vector<int> arr(n);
+    int indexLoop = binarySearchIterative(bookCodes, target);
 
-    cout << "Enter sorted book codes:\n";
-    for (int i = 0; i < n; i++)
-        cin >> arr[i];
+    int indexRecursive = binarySearchRecursive(bookCodes, 0, bookCodes.size() - 1, target);
 
-    int target;
-    cout << "Enter target book code: ";
-    cin >> target;
-
-    int pos1 = iterativeBinarySearch(arr, target);
-    int pos2 = recursiveBinarySearch(arr, 0, n - 1, target);
-
-    if (pos1 != -1)
-        cout << "Iterative Binary Search: Found at position " << pos1 << endl;
-    else
-        cout << "Iterative Binary Search: Not Found\n";
-
-    if (pos2 != -1)
-        cout << "Recursive Binary Search: Found at position " << pos2 << endl;
-    else
-        cout << "Recursive Binary Search: Not Found\n";
+    std::cout << "Target book code: " << target << "\n";
+    std::cout << "Position (Iterative): " << indexLoop << "\n";
+    std::cout << "Position (Recursive): " << indexRecursive << "\n";
 
     return 0;
 }
