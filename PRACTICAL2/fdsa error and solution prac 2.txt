@@ -1,0 +1,11 @@
+PRAC2_1
+
+Error: When searching recursively, forgetting to check if you've reached the end of the list makes the code keep running forever until it crashes.
+
+Solution: Tell the code to stop and return -1 if it checks past the last item in the list.
+
+PRAC2_2
+
+Error: Checking position `n` instead of stopping before it tries to read data outside the list, giving you random junk data or an error.
+
+Solution: Make sure the loop strictly stops before `n` (using `< n`) so it only looks at real items inside the list.
