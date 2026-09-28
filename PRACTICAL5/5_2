@@ -1,0 +1,116 @@
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+    string name;
+    Node *next, *prev;
+};
+Node *head = NULL, *dhead = NULL;
+
+void insert(string s) {
+    Node *n = new Node{s, NULL, NULL};
+    if (!head) {
+        head = n;
+        n->next = head;
+    } else {
+        Node *t = head;
+        while (t->next != head) t = t->next;
+        t->next = n;
+        n->next = head;
+    }
+}
+
+void dinsert(string s) {
+    Node *n = new Node{s, NULL, NULL};
+    if (!dhead) {
+        dhead = n;
+        n->next = n->prev = n;
+    } else {
+        Node *t = dhead->prev;
+        n->next = dhead;
+        n->prev = t;
+        t->next = n;
+        dhead->prev = n;
+    }
+}
+
+void del(string s) {
+    if (!head) return;
+    Node *t = head, *p = NULL;
+    do {
+        if (t->name == s) {
+            if (t->next == t) head = NULL;
+            else {
+                if (t == head) {
+                    p = head;
+                    while (p->next != head) p = p->next;
+                    head = head->next;
+                    p->next = head;
+                } else p->next = t->next;
+            }
+            delete t;
+            break;
+        }
+        p = t;
+        t = t->next;
+    } while (t != head);
+}
+
+void ddel(string s) {
+    if (!dhead) return;
+    Node *t = dhead;
+    do {
+        if (t->name == s) {
+            if (t->next == t) dhead = NULL;
+            else {
+                t->prev->next = t->next;
+                t->next->prev = t->prev;
+                if (t == dhead) dhead = t->next;
+            }
+            delete t;
+            return;
+        }
+        t = t->next;
+    } while (t != dhead);
+}
+
+void display() {
+    cout << "Singly: ";
+    if (head) {
+        Node *t = head;
+        do {
+            cout << t->name << " ";
+            t = t->next;
+        } while (t != head);
+    }
+    cout << "\nDoubly: ";
+    if (dhead) {
+        Node *t = dhead;
+        do {
+            cout << t->name << " ";
+            t = t->next;
+        } while (t != dhead);
+    }
+    cout << endl;
+}
+
+int main() {
+    int ch;
+    string s;
+    do {
+        cout << "\n1.Join  2.Leave  3.Display  0.Exit\n";
+        cin >> ch;
+        if (ch == 1) {
+            cin >> s;
+            insert(s);
+            dinsert(s);
+        }
+        else if (ch == 2) {
+            cin >> s;
+            del(s);
+            ddel(s);
+        }
+        else if (ch == 3) display();
+    } while (ch != 0);
+}
