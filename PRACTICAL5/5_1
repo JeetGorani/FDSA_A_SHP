@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+struct Node {
+    string song;
+    Node *prev, *next;
+};
+Node *head = NULL;
+
+void insert(string s) {
+    Node *n = new Node{s, NULL, NULL};
+    if (!head) head = n;
+    else {
+        Node *t = head;
+        while (t->next) t = t->next;
+        t->next = n;
+        n->prev = t;
+    }
+}
+
+void after(string key, string s) {
+    Node *t = head;
+    while (t && t->song != key) t = t->next;
+    if (!t) { cout << "Not found\n"; return; }
+    Node *n = new Node{s, t, t->next};
+    if (t->next) t->next->prev = n;
+    t->next = n;
+}
+
+void del() {
+    if (!head) return;
+    Node *t = head;
+    head = head->next;
+    if (head) head->prev = NULL;
+    delete t;
+}
+
+void display() {
+    int c = 0;
+    for (Node *t = head; t; t = t->next) {
+        cout << t->song << " ";
+        c++;
+    }
+    cout << "\nCount = " << c << endl;
+}
+
+int main() {
+    int ch;
+    string s, key;
+    do {
+        cout << "\n1.Insert End  2.Insert After";
+        cout << "\n3.Delete First  4.Display  0.Exit\n";
+        cin >> ch;
+        switch (ch) {
+            case 1: cin >> s; insert(s); break;
+            case 2: cin >> key >> s; after(key, s); break;
+            case 3: del(); break;
+            case 4: display(); break;
+        }
+    } while (ch != 0);
+}
